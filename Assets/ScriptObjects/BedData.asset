@@ -23,13 +23,16 @@ MonoBehaviour:
     - {fileID: 2100000, guid: a93200679e281254db20ae38b87ef330, type: 2}
     - {fileID: 2100000, guid: dd01cb1fdf27ea04fb8437c6a1b39cfd, type: 2}
     - {fileID: 2100000, guid: 5bc9826f8ad5e6f4aa9c9cf59b4a36b9, type: 2}
+    Name: Frame
   - materials:
     - {fileID: 2100000, guid: 4c24eb00c8ecc9a4fb9ee842cfbd0335, type: 2}
     - {fileID: 2100000, guid: 8ce2d33d125b2b84bbde5f919fc7a1f7, type: 2}
     - {fileID: 2100000, guid: b5d1cd1b40d6bfc43a8a6852fe856a8e, type: 2}
     - {fileID: 2100000, guid: 710e97300d448a34a8690a47fe455767, type: 2}
+    Name: Blanket
   - materials:
     - {fileID: 2100000, guid: 4c24eb00c8ecc9a4fb9ee842cfbd0335, type: 2}
     - {fileID: 2100000, guid: 8ce2d33d125b2b84bbde5f919fc7a1f7, type: 2}
     - {fileID: 2100000, guid: b5d1cd1b40d6bfc43a8a6852fe856a8e, type: 2}
     - {fileID: 2100000, guid: 710e97300d448a34a8690a47fe455767, type: 2}
+    Name: Pillow

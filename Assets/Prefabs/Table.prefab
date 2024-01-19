@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9169376155887418851}
   - component: {fileID: 4992476965495766714}
   - component: {fileID: 162566284836355473}
+  - component: {fileID: 592637423670836007}
   m_Layer: 6
   m_Name: TableObject
   m_TagString: Untagged
@@ -107,6 +108,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5495902117074765545, guid: 71607695f6e960545bb78895944518ed, type: 3}
+--- !u!114 &592637423670836007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340694734054362066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a860d6764e4fdbb4baafa977140fcaa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placer: {fileID: 0}
 --- !u!1 &7166351212554328906
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,6 +130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8476681156365982113}
+  - component: {fileID: 2350370845036054822}
   m_Layer: 6
   m_Name: Table
   m_TagString: Untagged
@@ -139,3 +154,19 @@ Transform:
   - {fileID: 580234247174591258}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2350370845036054822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7166351212554328906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53648d72ad596ae458b29b53cb241f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 2504a221bcb35de4f86077bdb88a3c4a, type: 2}
+  TakenCells: []
+  componentMaterials: 
+  SettingsUI: {fileID: 6040731614842673031, guid: 6e3e9e5cb4732c547b2276b5a22710c7, type: 3}

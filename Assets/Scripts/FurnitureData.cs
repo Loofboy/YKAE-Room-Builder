@@ -9,6 +9,8 @@ public class FurnitureData : ScriptableObject
     public class SwatchContainer
     {
         public List<Material> materials;
+        //public Sprite Matsprite;
+        public string Name;
     }
 
     public string Name;

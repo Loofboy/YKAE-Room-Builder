@@ -45,6 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53648d72ad596ae458b29b53cb241f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 9c5bd30e156d9fa42a2cddc9c35025c9, type: 2}
+  TakenCells: []
+  componentMaterials: 
+  rotation: 0
+  SettingsUI: {fileID: 6040731614842673031, guid: 6e3e9e5cb4732c547b2276b5a22710c7, type: 3}
 --- !u!1 &7981532705277635138
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,6 +62,7 @@ GameObject:
   - component: {fileID: 2889764029105976937}
   - component: {fileID: 7681428715479607765}
   - component: {fileID: 8544577181545256638}
+  - component: {fileID: 5427863350499902798}
   m_Layer: 6
   m_Name: BedObject
   m_TagString: Untagged
@@ -153,3 +159,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5495902117074765545, guid: 6c0230a9004267e4f86a250950195454, type: 3}
+--- !u!114 &5427863350499902798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7981532705277635138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a860d6764e4fdbb4baafa977140fcaa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placer: {fileID: 0}

@@ -14,14 +14,12 @@ public class UIController : MonoBehaviour
     public GameObject ObjectSlot;
     public GameObject Catalogue;
 
-    private Camera cam;
     private bool ObjectUIState = false;
     private bool isPlacing = false;
     private int placingID = -1;
     // Start is called before the first frame update
     void Start()
     {
-        cam = Camera.main;
         foreach(FurnitureData data in FurnitureList)
         {
             GameObject slot = Instantiate(ObjectSlot);
