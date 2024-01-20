@@ -14,6 +14,7 @@ public class Placing : MonoBehaviour
 
     public List<Vector3Int> OccupiedCells;
     public List<Vector3Int> CheckedCells;
+    public List<Vector3Int> AdjacentCells;
     private FurnitureData dataInCheck;
 
     public Material Green;
@@ -21,8 +22,13 @@ public class Placing : MonoBehaviour
     public Material Grey;
 
     public GameObject MovingObject;
+    public GameObject PlacementUI;
 
     private GameObject ObjPlaceholder;
+    public GameObject lastobj;
+    public bool isLoading = false;
+
+    public bool SnapMode = false;
 
     private int xmin = -6, xmax = 5, zmin = 2, zmax = 13;
     private int mod = 1;
@@ -60,6 +66,7 @@ public class Placing : MonoBehaviour
 
     public void EnterPlacementMode(int ObjID)
     {
+        CalculateAdjacentCells();
         isplacing = true;
         ObjectID = ObjID;
         floorInputManager.Clicked += PlaceObject;
@@ -73,13 +80,14 @@ public class Placing : MonoBehaviour
         ObjPlaceholder.GetComponentInChildren<MeshCollider>().enabled = false;
         ObjPlaceholder.transform.position = indicatorobj.transform.position;
         ObjPlaceholder.transform.SetParent(indicatorobj.transform);
+        PlacementUI.SetActive(true);
         Rotate(objectRotation);
 
     }
 
     public void PlaceObject()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() && !isLoading)
             return;
 
         foreach (var cell in CheckedCells) 
@@ -87,6 +95,10 @@ public class Placing : MonoBehaviour
             if (OccupiedCells.Contains(cell))
                 return;
         }
+
+        if (SnapMode && !AdjacentCells.Contains(CheckedCells[0]))
+            return;
+
         foreach (var cell in CheckedCells)
         {
             OccupiedCells.Add(cell);
@@ -104,16 +116,17 @@ public class Placing : MonoBehaviour
         }
         else
         {
-            GameObject obj = Instantiate(dataInCheck.Prefab);
-            obj.transform.SetParent(FurnitureList.transform);
-            obj.transform.position = grid.CellToWorld(CheckedCells[0]);
+            lastobj = Instantiate(dataInCheck.Prefab);
+            lastobj.transform.SetParent(FurnitureList.transform);
+            lastobj.transform.position = grid.CellToWorld(CheckedCells[0]);
 
-            obj.transform.position += new Vector3(xoffset, 0, yoffset);
-            obj.transform.rotation = Quaternion.Euler(0, RotationAngle, 0);
-            obj.GetComponent<FurnitureScript>().TakenCells.AddRange(CheckedCells);
-            obj.GetComponent<FurnitureScript>().rotation = objectRotation;
+            lastobj.transform.position += new Vector3(xoffset, 0, yoffset);
+            lastobj.transform.rotation = Quaternion.Euler(0, RotationAngle, 0);
+            lastobj.GetComponent<FurnitureScript>().TakenCells.AddRange(CheckedCells);
+            lastobj.GetComponent<FurnitureScript>().rotation = objectRotation;
         }
         CheckedCells.Clear();
+        CalculateAdjacentCells();
     }
     public void findData()
     {
@@ -151,7 +164,9 @@ public class Placing : MonoBehaviour
         floorInputManager.Escape -= ExitPlacementMode;
         CheckedCells.Clear();
         Destroy(ObjPlaceholder);
+        PlacementUI.SetActive(false);
         objectRotation = 0;
+        CalculateAdjacentCells();
     }
 
     public void KillSettingsUI()
@@ -209,6 +224,32 @@ public class Placing : MonoBehaviour
 
     }
 
+    public void CalculateAdjacentCells()
+    {
+        AdjacentCells.Clear();
+        if (OccupiedCells.Count < 45) return;
+        for(int i = 44; i < OccupiedCells.Count; i++)
+        {
+            Vector3Int cell = OccupiedCells[i];
+            if (!OccupiedCells.Contains(cell + new Vector3Int(-1, 0, 0)))
+            {
+                AdjacentCells.Add(cell + new Vector3Int(-1, 0, 0));
+            }
+            if (!OccupiedCells.Contains(cell + new Vector3Int(1, 0, 0)))
+            {
+                AdjacentCells.Add(cell + new Vector3Int(1, 0, 0));
+            }
+            if (!OccupiedCells.Contains(cell + new Vector3Int(0, 0, 1)))
+            {
+                AdjacentCells.Add(cell + new Vector3Int(0, 0, 1));
+            }
+            if (!OccupiedCells.Contains(cell + new Vector3Int(0, 0, -1)))
+            {
+                AdjacentCells.Add(cell + new Vector3Int(0, 0, -1));
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -223,7 +264,7 @@ public class Placing : MonoBehaviour
         cellpos = grid.WorldToCell(floorInputManager.GetMousePos());
         foreach (Vector3Int cell in CheckedCells)
         {
-            if (isplacing && OccupiedCells.Contains(cell))
+            if (isplacing && (OccupiedCells.Contains(cell) || (SnapMode && !AdjacentCells.Contains(CheckedCells[0]))))
             {
                 indicatorobj.GetComponentInChildren<MeshRenderer>().material = Red;
                 if(ObjPlaceholder != null)
@@ -237,7 +278,7 @@ public class Placing : MonoBehaviour
                 }
                 break;
             }
-            else if (isplacing && !OccupiedCells.Contains(cell))
+            else if (isplacing && (!OccupiedCells.Contains(cell) || (SnapMode && AdjacentCells.Contains(CheckedCells[0]))))
             {
                 indicatorobj.GetComponentInChildren<MeshRenderer>().material = Green;
                 if (ObjPlaceholder != null)
@@ -251,6 +292,9 @@ public class Placing : MonoBehaviour
                 }
             }
         }
-        indicatorobj.transform.position = grid.CellToWorld(cellpos);
+        if(!SnapMode || (SnapMode && AdjacentCells.Contains(CheckedCells[0])))
+            indicatorobj.transform.position = grid.CellToWorld(cellpos);
+        else
+            indicatorobj.transform.position = floorInputManager.GetMousePos();
     }
 }

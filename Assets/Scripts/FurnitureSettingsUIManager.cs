@@ -41,10 +41,10 @@ public class FurnitureSettingsUIManager : MonoBehaviour
 
     public void DeleteObject()
     {
-        Destroy(parentObject);
         foreach (var cell in furnitureScript.TakenCells) {
             placer.OccupiedCells.Remove(cell);
         }
+        Destroy(parentObject);
     }
 
     public void MoveObject()

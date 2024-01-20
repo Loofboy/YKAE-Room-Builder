@@ -8,6 +8,7 @@ public class FurnitureScript : MonoBehaviour
 {
     public FurnitureData data;
     public List<Vector3Int> TakenCells = new List<Vector3Int>();
+    public int[] prearray = new int[99];
     public int[] componentMaterials;
     public int rotation;
 
@@ -18,7 +19,7 @@ public class FurnitureScript : MonoBehaviour
         componentMaterials = new int[GetComponentInChildren<Renderer>().materials.Length];
         for(int i = 0; i < componentMaterials.Length; i++) 
         {
-            componentMaterials[i] = 0;
+            componentMaterials[i] = prearray[i];
             SetMaterial(i, componentMaterials[i]);
         }
     }
@@ -44,7 +45,6 @@ public class FurnitureScript : MonoBehaviour
 
     public void SetMaterial(int componentint, int materialint)
     {
-        Debug.Log(componentint + " " + materialint);
         Material[] mats = GetComponentInChildren<Renderer>().materials;
         mats[componentint] = data.Components[componentint].materials[materialint];
         componentMaterials[componentint] = materialint;
