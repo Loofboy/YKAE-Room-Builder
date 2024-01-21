@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8262ef4e57c985d49821dd9fdb38247b, type: 3}
+  m_Name: LampData
+  m_EditorClassIdentifier: 
+  Name: Lamp
+  ID: 6
+  Prefab: {fileID: 7166351212554328906, guid: d29a938d530acc34bae7ccecd3921657, type: 3}
+  Image: {fileID: 21300000, guid: 859e1d6ff4a0a694e92b05d491775181, type: 3}
+  Size: {x: 1, y: 1}
+  Components:
+  - materials:
+    - {fileID: 2100000, guid: 6f5b93bdab27bbd42bb5bbd30b5102e2, type: 2}
+    - {fileID: 2100000, guid: a93200679e281254db20ae38b87ef330, type: 2}
+    - {fileID: 2100000, guid: dd01cb1fdf27ea04fb8437c6a1b39cfd, type: 2}
+    - {fileID: 2100000, guid: 5bc9826f8ad5e6f4aa9c9cf59b4a36b9, type: 2}
+    Name: Base
+  - materials:
+    - {fileID: 2100000, guid: 4c24eb00c8ecc9a4fb9ee842cfbd0335, type: 2}
+    - {fileID: 2100000, guid: 8ce2d33d125b2b84bbde5f919fc7a1f7, type: 2}
+    - {fileID: 2100000, guid: b5d1cd1b40d6bfc43a8a6852fe856a8e, type: 2}
+    - {fileID: 2100000, guid: 710e97300d448a34a8690a47fe455767, type: 2}
+    Name: Lamp Shade

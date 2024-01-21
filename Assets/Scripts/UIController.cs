@@ -31,7 +31,9 @@ public class UIController : MonoBehaviour
     public Sprite GridImage;
     public Sprite SnapImage;
 
-    public TMP_Dropdown dropdown;
+    public GameObject LoadSlotPrefab;
+    public GameObject LoadSlotContainer;
+    public GameObject SearchBar;
 
     public DataManager dataman;
 
@@ -121,6 +123,7 @@ public class UIController : MonoBehaviour
 
     public void ToggleRoomSwatch()
     {
+        if (isPlacing) return;
         RoomSwatchUI.SetActive(!roomswatchstate);
         roomswatchstate = !roomswatchstate;
     }
@@ -128,10 +131,11 @@ public class UIController : MonoBehaviour
     public void ToggleLoadMenu()
     {
         if (savemenustate) ToggleSaveMenu();
-        placer.ExitPlacementMode();
-        dropdown.ClearOptions();
+        if (placer.isplacing) return;
+        //dropdown.ClearOptions();
         if (!loadmenustate)
         {
+            SearchBar.GetComponent<TMP_InputField>().onValueChanged.AddListener(delegate { ChangeLoadSlots(SearchBar.GetComponent<TMP_InputField>().text); });
             loadmenustate = true;
             LoadMenu.SetActive(true);
             if (!string.IsNullOrEmpty(namepath))
@@ -139,25 +143,55 @@ public class UIController : MonoBehaviour
                 var content = File.ReadAllText(namepath);
                 nameslist = JsonUtility.FromJson<NamesList>(content);
             }
-            dropdown.value = 0;
-            dropdown.options.Add(new TMP_Dropdown.OptionData(text: ""));
+            //dropdown.value = 0;
+            //dropdown.options.Add(new TMP_Dropdown.OptionData(text: "Select Save"));
             
             foreach (string name in nameslist.FileNames)
             {
-                dropdown.options.Add(new TMP_Dropdown.OptionData(text: name));
+                GameObject obj = Instantiate(LoadSlotPrefab);
+                obj.transform.SetParent(LoadSlotContainer.transform, false);
+                obj.GetComponentInChildren<TextMeshProUGUI>().text = name;
+                obj.GetComponent<Button>().onClick.AddListener(delegate { LoadRoom(name); });
+                //dropdown.options.Add(new TMP_Dropdown.OptionData(text: name));
             }
             //dropdown.options.RemoveAt(0);
-            dropdown.onValueChanged.AddListener(delegate { if(dropdown.value != 0) LoadRoom(nameslist.FileNames[dropdown.value - 1]); });
+            //dropdown.onValueChanged.AddListener(delegate { if(dropdown.value != 0) LoadRoom(nameslist.FileNames[dropdown.value - 1]); });
         }
         else
         {
+            for(int i = LoadSlotContainer.transform.childCount - 1; i >= 0; i--)
+            {
+                Destroy(LoadSlotContainer.transform.GetChild(i).gameObject);
+            }
             loadmenustate = false;
             LoadMenu.SetActive(false);
         }
     }
 
+    public void ChangeLoadSlots(string input)
+    {
+        for (int i = LoadSlotContainer.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(LoadSlotContainer.transform.GetChild(i).gameObject);
+        }
+
+        foreach (string name in nameslist.FileNames)
+        {
+            if (name.ToLower().Contains(input.ToLower()))
+            {
+                GameObject obj = Instantiate(LoadSlotPrefab);
+                obj.transform.SetParent(LoadSlotContainer.transform, false);
+                obj.GetComponentInChildren<TextMeshProUGUI>().text = name;
+                obj.GetComponent<Button>().onClick.AddListener(delegate { LoadRoom(name); });
+                //dropdown.options.Add(new TMP_Dropdown.OptionData(text: name));
+            }
+        }
+
+    }
+
     public void ToggleSaveMenu()
     {
+        if (placer.isplacing) return;
         if (loadmenustate) ToggleLoadMenu();
         placer.ExitPlacementMode();
         savemenustate = !savemenustate;
@@ -166,7 +200,8 @@ public class UIController : MonoBehaviour
 
     public void NewRoom()
     {
-        for(int i = SpawnedFunitureContainer.transform.childCount - 1; i > -1; i--)
+        if (placer.isplacing) return;
+        for (int i = SpawnedFunitureContainer.transform.childCount - 1; i > -1; i--)
         {
             foreach (var cell in SpawnedFunitureContainer.transform.GetChild(i).GetComponent<FurnitureScript>().TakenCells)
             {
@@ -207,6 +242,7 @@ public class UIController : MonoBehaviour
     public void LoadRoom(string name)
     {
         NewRoom();
+        SearchBar.GetComponent<TMP_InputField>().text = "";
         ToggleLoadMenu();
         var path = Application.streamingAssetsPath + "/" + name + ".json";
         if (!string.IsNullOrEmpty(path))

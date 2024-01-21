@@ -31,7 +31,7 @@ public class Placing : MonoBehaviour
     public bool SnapMode = false;
 
     private int xmin = -6, xmax = 5, zmin = 2, zmax = 13;
-    private int mod = 1;
+    private int xmod = 1, ymod = 1;
     private int objx, objy;
     private int checkx = 0, checky = 0;
 
@@ -148,7 +148,7 @@ public class Placing : MonoBehaviour
             {
             for (int y = 0; y < checky; y++)
                 {
-                    Cellslist.Add(cellpos + new Vector3Int(x * mod, 0, y * mod));
+                    Cellslist.Add(cellpos + new Vector3Int(x * xmod, 0, y * ymod));
                 }
             }
         return Cellslist;
@@ -184,7 +184,8 @@ public class Placing : MonoBehaviour
         switch (rotation)
         {
             case 0:
-                mod = 1;
+                ymod = 1;
+                xmod = 1;
                 checkx = objx;
                 checky = objy;
                 RotationAngle = 0;
@@ -192,7 +193,8 @@ public class Placing : MonoBehaviour
                 yoffset = 0;
                 break;
             case 1:
-                mod = -1;
+                ymod = 1;
+                xmod = -1;
                 checkx = objy;
                 checky = objx;
                 RotationAngle = -90;
@@ -200,7 +202,8 @@ public class Placing : MonoBehaviour
                 yoffset = 0;
                 break;
             case 2:
-                mod = -1;
+                ymod = -1;
+                xmod = -1;
                 checkx = objx;
                 checky = objy;
                 RotationAngle = -180;
@@ -208,7 +211,8 @@ public class Placing : MonoBehaviour
                 yoffset = 1;
                 break;
             case 3:
-                mod = 1;
+                ymod = -1;
+                xmod = 1;
                 checkx = objy;
                 checky = objx;
                 RotationAngle = -270;
@@ -250,14 +254,19 @@ public class Placing : MonoBehaviour
         }
     }
 
+    public void TriggerRotation()
+    {
+        objectRotation++;
+        if (objectRotation > 3) objectRotation = 0;
+        Rotate(objectRotation);
+    }
+
     // Update is called once per frame
     void Update()
     {
         if(isplacing && Input.GetKeyDown(KeyCode.R))
         {
-            objectRotation++;
-            if (objectRotation > 3) objectRotation = 0;
-            Rotate(objectRotation);
+            TriggerRotation();
         }
 
         CheckedCells = CheckedCellsList();

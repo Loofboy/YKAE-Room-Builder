@@ -64,14 +64,14 @@ public class FurnitureSettingsUIManager : MonoBehaviour
     {
         if (!swatchopen)
         {
-            SwatchPanel.SetActive(true);
+            SwatchPanel.transform.parent.gameObject.SetActive(true);
             if (!swatchgenerated)
                 GenerateSwatches();
             swatchopen = true;
         }
         else
         {
-            SwatchPanel.SetActive(false);
+            SwatchPanel.transform.parent.gameObject.SetActive(false);
             swatchopen = false;
         }
     }
@@ -86,7 +86,7 @@ public class FurnitureSettingsUIManager : MonoBehaviour
             for(int mat = 0; mat < furnitureData.Components[comp].materials.Count; mat++)
             {
                 GameObject swatch = Instantiate(SwatchItemPrefab);
-                swatch.transform.SetParent(item.transform.GetChild(1).transform, false);
+                swatch.transform.SetParent(item.transform.GetChild(1).GetChild(0).transform, false);
                 Sprite sprite = Sprite.Create(
                     (Texture2D)furnitureData.Components[comp].materials[mat].mainTexture,
                     new Rect(0, 0, furnitureData.Components[comp].materials[mat].mainTexture.width, furnitureData.Components[comp].materials[mat].mainTexture.height),

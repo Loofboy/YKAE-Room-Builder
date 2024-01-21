@@ -23,7 +23,6 @@ public class FloorInputManager : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        Debug.Log("Clicked");
         Clicked?.Invoke();
     }
     private void Update()
